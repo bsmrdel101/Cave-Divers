@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace BEAN 
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : NetworkBehaviour
     {
         [Header("Movement")]
         [SerializeField] private float moveSpeed = 12f;
@@ -24,6 +25,7 @@ namespace BEAN
 
         private void Update()
         {
+            if (!IsOwner) return;
             HandlePlayerMovement();
         }
 

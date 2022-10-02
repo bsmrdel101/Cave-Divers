@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace BEAN 
 {
-    public class PlayerCamera : MonoBehaviour
+    public class PlayerCamera : NetworkBehaviour
     {
         [Header("Camera Controls")]
         public float sensitivity = 400f;
@@ -16,11 +17,18 @@ namespace BEAN
 
         private void Start()
         {
+            if (!IsOwner) Destroy(this.gameObject);
+            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
 
         private void Update()
+        {
+            HandleCameraMovement();
+        }
+
+        private void HandleCameraMovement()
         {
             float mouseX = Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
             float mouseY = Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
